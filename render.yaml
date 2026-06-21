@@ -1,0 +1,36 @@
+services:
+  # 1. FastAPI Backend Web Service
+  - type: web
+    name: medipack-backend
+    env: docker
+    dockerfilePath: backend/Dockerfile
+    dockerContext: .
+    plan: free
+    envVars:
+      - key: MONGO_URI
+        sync: false # User will configure their MongoDB connection string (e.g. MongoDB Atlas)
+      - key: MONGO_DB_NAME
+        value: medivault
+      - key: USE_MOCK_S3
+        value: "true" # Default to true for mock testing; can be set to false for real AWS S3
+      - key: JWT_SECRET_KEY
+        generateValue: true # Generates a random cryptographically secure key automatically
+      - key: ENCRYPTION_KEY
+        value: fearvzStwhCfiCaafOMMQdx211nzsfIuEpgyrvKlWGI=
+      - key: CORS_ALLOW_ORIGINS
+        value: "*"
+
+  # 2. React Frontend Static Site
+  - type: web
+    name: medipack-frontend
+    runtime: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/dist
+    routes:
+      # SPA rewrite rule: Redirect all requests to index.html to handle client-side routing
+      - type: rewrite
+        source: /(.*)
+        destination: /index.html
+    envVars:
+      - key: VITE_API_UPLOAD_BASE
+        sync: false # Points to the backend URL, e.g. https://medipack-backend.onrender.com/api/upload

@@ -1,0 +1,92 @@
+name: MediPack AI CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-name: '3.10'
+
+    - name: Start MongoDB Service
+      uses: supercharge/mongodb-github-action@1.10.0
+      with:
+        mongodb-version: '7.0'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r backend/requirements.txt
+        pip install httpx pytest fastapi testclient
+
+    - name: Run Backend Integration Flow Tests
+      env:
+        MONGO_URI: mongodb://localhost:27017
+        MONGO_DB_NAME: medivault_test
+        JWT_SECRET_KEY: test_secret_key_at_least_32_chars_long
+        ENCRYPTION_KEY: fearvzStwhCfiCaafOMMQdx211nzsfIuEpgyrvKlWGI=
+      run: |
+        python backend/validate_agent_flow.py
+
+    - name: Run Backend Chunked Upload E2E Tests
+      env:
+        MONGO_URI: mongodb://localhost:27017
+        MONGO_DB_NAME: medivault_test
+        JWT_SECRET_KEY: test_secret_key_at_least_32_chars_long
+        ENCRYPTION_KEY: fearvzStwhCfiCaafOMMQdx211nzsfIuEpgyrvKlWGI=
+      run: |
+        python backend/validate_mock_e2e.py
+
+  frontend-build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install Dependencies
+      run: |
+        cd frontend
+        npm install
+
+    - name: Compile Production Build
+      run: |
+        cd frontend
+        npm run build
+
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Test Build Backend Docker Image
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: backend/Dockerfile
+        push: false
+
+    - name: Test Build Frontend Docker Image
+      uses: docker/build-push-action@v4
+      with:
+        context: ./frontend
+        file: frontend/Dockerfile
+        push: false

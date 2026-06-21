@@ -1,0 +1,16 @@
+fastapi==0.115.0
+uvicorn[standard]==0.30.0
+boto3==1.35.0
+pydantic==2.9.0
+pydantic-settings==2.5.0
+python-dotenv==1.0.1
+pymongo
+passlib[bcrypt]
+bcrypt
+pyjwt
+python-multipart
+slowapi
+cryptography
+mcp
+pypdf
+requests
