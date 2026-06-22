@@ -15,34 +15,24 @@ def _safe_mongo_target(uri: str) -> str:
     except Exception:
         return "unknown-host"
 
-client = None
+client = MongoClient(settings.MONGO_URI, serverSelectionTimeoutMS=5000)
 try:
-    client = MongoClient(settings.MONGO_URI, serverSelectionTimeoutMS=5000)
+    client.admin.command("ping")
+    logger.info(
+        "MongoDB connection successful target=%s database=%s",
+        _safe_mongo_target(settings.MONGO_URI),
+        settings.MONGO_DB_NAME,
+    )
 except Exception as e:
-    logger.error(f"Failed to initialize MongoClient with settings.MONGO_URI: {e}. Falling back to DummyMongoClient.")
-    class DummyMongoClient:
-        def __getitem__(self, name):
-            return self
-        def __getattr__(self, name):
-            return self
-        def __call__(self, *args, **kwargs):
-            return self
-        def __iter__(self):
-            return iter([])
-        def get(self, *args, **kwargs):
-            return None
-        def find_one(self, *args, **kwargs):
-            return None
-        def count_documents(self, *args, **kwargs):
-            return 0
-        def command(self, *args, **kwargs):
-            raise RuntimeError("Database not available")
-    client = DummyMongoClient()
+    logger.error(
+        "Failed to connect to MongoDB at %s: %s",
+        _safe_mongo_target(settings.MONGO_URI),
+        e,
+        exc_info=True,
+    )
+    raise
 
-# Handle collection referencing depending on whether client is a dummy
-if hasattr(client, "__class__") and client.__class__.__name__ == "DummyMongoClient":
-    db = client
-else:
+db = client[settings.MONGO_DB_NAME]
     db = client[settings.MONGO_DB_NAME]
 
 users_collection = db["users"]
