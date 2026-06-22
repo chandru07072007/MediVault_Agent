@@ -28,7 +28,7 @@ class Settings(BaseSettings):
     REFRESH_COOKIE_SAMESITE: str = "lax"
     REFRESH_COOKIE_PATH: str = "/api/auth"
     REFRESH_COOKIE_DOMAIN: str = ""
-    CORS_ALLOW_ORIGINS: str = "http://localhost:5173"
+    CORS_ALLOW_ORIGINS: str = "http://localhost:5173,https://medipack-frontend.onrender.com"
     
     # Gemini Configuration
     GEMINI_API_KEY: str = ""
