@@ -29,6 +29,6 @@ try:
         Bucket=bucket_name,
         CORSConfiguration=cors_configuration
     )
-    print(f"✅ Successfully configured CORS for bucket: {bucket_name}")
+    print(f"SUCCESS: Configured CORS for bucket: {bucket_name}")
 except Exception as e:
-    print(f"❌ Failed to configure CORS: {e}")
+    print(f"ERROR: Failed to configure CORS: {e}")
