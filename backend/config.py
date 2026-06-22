@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     UPLOAD_CLEANUP_INTERVAL_SECONDS: int = Field(default=300, ge=60, le=86400)
     
     # MongoDB + Auth Config
-    MONGO_URI: str = Field(default="mongodb://localhost:27017/medivault", min_length=10)
+    MONGO_URI: str = Field(default="mongodb+srv://chandrupalanisamyaids_db_user:rmTA6r8dtY4yAD3P@cluster0.ow8zwco.mongodb.net/medivault?retryWrites=true&w=majority", min_length=10)
     MONGO_DB_NAME: str = Field(default="medivault", min_length=1, max_length=64)
     JWT_SECRET_KEY: str = Field(default="replace_with_a_strong_random_secret_at_least_32_chars_123456", min_length=32)  # must come from env/.env
     JWT_ALGORITHM: str = "HS256"
@@ -29,8 +29,8 @@ class Settings(BaseSettings):
     REFRESH_COOKIE_PATH: str = "/api/auth"
     REFRESH_COOKIE_DOMAIN: str = ""
     CORS_ALLOW_ORIGINS: str = "http://localhost:5173,https://medipack-frontend.onrender.com"
-DEBUG_DB: bool = False
-    
+    DEBUG_DB: bool = False
+
     # Gemini Configuration
     GEMINI_API_KEY: str = ""
 
