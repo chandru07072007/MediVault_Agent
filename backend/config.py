@@ -29,6 +29,7 @@ class Settings(BaseSettings):
     REFRESH_COOKIE_PATH: str = "/api/auth"
     REFRESH_COOKIE_DOMAIN: str = ""
     CORS_ALLOW_ORIGINS: str = "http://localhost:5173,https://medipack-frontend.onrender.com"
+DEBUG_DB: bool = False
     
     # Gemini Configuration
     GEMINI_API_KEY: str = ""
