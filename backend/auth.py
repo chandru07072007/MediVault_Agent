@@ -5,7 +5,7 @@ import bcrypt
 from uuid import uuid4
 from fastapi import HTTPException, Security, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from config import get_settings
+from backend.config import get_settings
 
 settings = get_settings()
 security = HTTPBearer()

@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from threading import RLock
 from urllib.parse import quote
-from config import get_settings
+from backend.config import get_settings
 
 _state_lock = RLock()
 _runtime_failure_rate = None

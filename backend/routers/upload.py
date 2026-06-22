@@ -36,7 +36,7 @@ from s3_client import (
 )
 from auth import get_current_user
 from database.db import upload_sessions_collection, uploads_collection, bucket_credentials_collection
-from config import get_settings
+from backend.config import get_settings
 from rate_limit import limiter
 from encryption_utils import encrypt_value, decrypt_value
 

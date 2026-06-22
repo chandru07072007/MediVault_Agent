@@ -13,7 +13,7 @@ from fastapi.testclient import TestClient
 from main import app
 from database.db import users_collection, upload_sessions_collection, uploads_collection
 import mock_s3_service
-from config import get_settings
+from backend.config import get_settings
 
 CHUNK_SIZE = 5 * 1024 * 1024
 

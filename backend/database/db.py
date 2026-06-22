@@ -1,7 +1,7 @@
 import logging
 from urllib.parse import urlparse
 from pymongo import MongoClient, ASCENDING
-from config import get_settings
+from backend.config import get_settings
 
 settings = get_settings()
 logger = logging.getLogger(__name__)
@@ -33,7 +33,6 @@ except Exception as e:
     raise
 
 db = client[settings.MONGO_DB_NAME]
-    db = client[settings.MONGO_DB_NAME]
 
 users_collection = db["users"]
 upload_sessions_collection = db["upload_sessions"]

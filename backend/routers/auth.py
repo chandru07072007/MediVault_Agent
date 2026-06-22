@@ -12,7 +12,7 @@ from auth import (
     get_access_token_ttl_seconds,
     get_current_user,
 )
-from config import get_settings
+from backend.config import get_settings
 from models.schemas import AuthTokenResponse
 from rate_limit import limiter
 

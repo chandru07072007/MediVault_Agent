@@ -15,7 +15,7 @@ from slowapi.middleware import SlowAPIMiddleware
 from routers.upload import router as upload_router
 from routers.auth import router as auth_router
 from routers.agent import router as agent_router
-from config import get_settings
+from backend.config import get_settings
 from rate_limit import limiter
 from database.db import check_database_connection
 from cleanup import cleanup_expired_upload_sessions_once, run_expired_upload_cleanup_loop

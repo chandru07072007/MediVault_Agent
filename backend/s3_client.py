@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from typing import List, Dict, Any
 from functools import lru_cache
 from botocore.config import Config
-from config import get_settings
+from backend.config import get_settings
 import mock_s3_service
 
 

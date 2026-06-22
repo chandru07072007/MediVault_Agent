@@ -1,6 +1,6 @@
 from functools import lru_cache
 from cryptography.fernet import Fernet, InvalidToken
-from config import get_settings
+from backend.config import get_settings
 
 @lru_cache()
 def _get_fernet() -> Fernet:
