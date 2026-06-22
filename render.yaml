@@ -17,8 +17,8 @@ services:
         generateValue: true # Generates a random cryptographically secure key automatically
       - key: ENCRYPTION_KEY
         value: fearvzStwhCfiCaafOMMQdx211nzsfIuEpgyrvKlWGI=
-      - key: CORS_ALLOW_ORIGINS
-        value: "*"
+      - key: DEBUG_DB
+        value: "false"
 
   # 2. React Frontend Static Site
   - type: web

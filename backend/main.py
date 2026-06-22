@@ -6,7 +6,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
@@ -74,6 +74,39 @@ async def shutdown_event():
             pass
 
 
+
+@app.get("/test-db")
+async def test_db():
+    settings = get_settings()
+    from database.db import client
+    try:
+        client.admin.command("ping")
+        return {"status": "ok", "mongo": "connected"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"MongoDB ping failed: {e}")
+
 @app.get("/health")
-async def health_check():
-    return {"status": "healthy", "service": "medipack-upload-api"}
+async def health():
+    return {"status": "ok"}
+
+@app.get("/debug-db")
+async def debug_db():
+    settings = get_settings()
+    if not getattr(settings, "DEBUG_DB", False):
+        raise HTTPException(status_code=403, detail="Debug endpoint disabled")
+    from database.db import (
+        users_collection,
+        uploads_collection,
+        upload_sessions_collection,
+        bucket_credentials_collection,
+        refresh_tokens_collection,
+        packages_collection,
+    )
+    return {
+        "users": users_collection.count_documents({}),
+        "uploads": uploads_collection.count_documents({}),
+        "upload_sessions": upload_sessions_collection.count_documents({}),
+        "bucket_credentials": bucket_credentials_collection.count_documents({}),
+        "refresh_tokens": refresh_tokens_collection.count_documents({}),
+        "packages": packages_collection.count_documents({}),
+    }
