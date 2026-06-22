@@ -19,7 +19,7 @@ cors_configuration = {
     'CORSRules': [{
         'AllowedHeaders': ['*'],
         'AllowedMethods': ['PUT', 'POST', 'GET', 'DELETE', 'HEAD'],
-        'AllowedOrigins': ['http://localhost:5173', 'http://localhost:3000'],
+        'AllowedOrigins': ['http://localhost:5173', 'http://localhost:3000', 'https://medipack-frontend.onrender.com'],
         'ExposeHeaders': ['ETag']
     }]
 }
